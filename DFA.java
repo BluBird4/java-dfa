@@ -46,10 +46,32 @@ public class DFA {
 	 */
 	public boolean run(String input) {
 
+		int strt_indx = 0;
 		//Loop through the input and make sure that it is indeed of the language recognized by the dfa
-		for(int i = 0 ; i < input.length ; i++){
-
+		for(int i = 0 ; i < input.length() ; i++){
+			if(strt_indx == (this.states.length -1)){
+				System.out.println("Almost there !");
+			}
+			else{
+			if(input.charAt(i) == '0'){
+				strt_indx = (int) this.states[strt_indx].charAt(2);
+				System.out.println(strt_indx);
+			}
+			
+			if(input.charAt(i) == '1'){
+				strt_indx = (int) this.states[strt_indx].charAt(4);
+				System.out.println(strt_indx);
+				System.out.println(this.states[0].charAt(4));
+			}
+		}
+		return true;
 		}	
 		return false;
+	}
+
+	public static void main(String[] args){
+
+		DFA dfa1 = new DFA("0,0,1;1,2,1;2,0,3;3,3,3#1,3");
+		dfa1.run("100010010");
 	}
 }
