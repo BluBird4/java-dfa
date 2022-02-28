@@ -18,7 +18,7 @@ public class DFA {
 	
 		public String[] states;
 		public String[] intermediate;
-		public ArrayList<Character> acceptstates;
+		public ArrayList<Integer> acceptstates;
 
 	public DFA(String description) {
 
@@ -27,12 +27,12 @@ public class DFA {
 
 		//Storing the value of the accept states 	
 		this.intermediate = states[states.length - 1].split("#");
-		this.acceptstates = new ArrayList<Character>();
+		this.acceptstates = new ArrayList<Integer>();
 		//Loop through the intermediate accept states and add them into the accept states in the accept states arraylist
 		for(int i = 0; i< intermediate[1].length(); i++){
 		//add anything in that string other than , ( as we aren't concerned with wrong input formats)	
 		if(intermediate[1].charAt(i) != ','){
-			acceptstates.add(intermediate[1].charAt(i));
+			acceptstates.add(Character.getNumericValue(intermediate[1].charAt(i)));
 		}
 		//After the loop is finished I should have my accept states and my dfa states ready to roll
 		}
@@ -49,29 +49,26 @@ public class DFA {
 		int strt_indx = 0;
 		//Loop through the input and make sure that it is indeed of the language recognized by the dfa
 		for(int i = 0 ; i < input.length() ; i++){
-			if(strt_indx == (this.states.length -1)){
-				System.out.println("Almost there !");
-			}
-			else{
+			//if 0 then transition to the 0s transition of the current state
 			if(input.charAt(i) == '0'){
-				strt_indx = (int) this.states[strt_indx].charAt(2);
-				System.out.println(strt_indx);
+				strt_indx = Character.getNumericValue(this.states[strt_indx].charAt(2));
 			}
-			
+			//if 1 then transition to the 1s transition of the current state
 			if(input.charAt(i) == '1'){
-				strt_indx = (int) this.states[strt_indx].charAt(4);
-				System.out.println(strt_indx);
-				System.out.println(this.states[0].charAt(4));
+				strt_indx = Character.getNumericValue(this.states[strt_indx].charAt(4));
 			}
 		}
-		return true;
-		}	
-		return false;
+		if(acceptstates.contains(strt_indx)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public static void main(String[] args){
 
 		DFA dfa1 = new DFA("0,0,1;1,2,1;2,0,3;3,3,3#1,3");
-		dfa1.run("100010010");
+		System.out.println(dfa1.run("11"));
 	}
 }
